@@ -36,8 +36,6 @@ namespace LabIIPU_PCI
         {
             //PCIDevices.DownloadFileOfDevIDs();
 
-            var transcriptOfVIDs = PCIDevices.ParseVIDsTranscript();
-            var transcriptOfPIDs = PCIDevices.ParsePIDsTranscript();
             var VIDs = new List<string>();
             var PIDs = new List<string>();
             var DevicesOnPci = PCIDevices.GetDevicesID("Win32_PnPEntity", "PnPDeviceID");
@@ -48,15 +46,10 @@ namespace LabIIPU_PCI
                 PIDs.Add(PCIDevices.ParsePidFromDeviceID(device));
             }
 
-            for(int i = 0; i < transcriptOfVIDs.Count; i++)
-            { 
-                if (VIDs.Count > 0 && transcriptOfVIDs[i].Contains(VIDs[0].ToLower()))
-                {
-                    textBox1.Text = textBox1.Text + "VID: " + transcriptOfVIDs[i] + Environment.NewLine + "PID: "
-                        + GetProductName(transcriptOfPIDs, PIDs).Trim() + Environment.NewLine + Environment.NewLine;
-                    VIDs.RemoveAt(0);
-                    i = 0;
-                }
+            for (int i = 0; i < VIDs.Count; i++)
+            {
+                textBox1.Text = textBox1.Text + "VID: " + PCIDevices.ParseVIDTranscript(VIDs[i]) + Environment.NewLine;
+                textBox1.Text = textBox1.Text + "PID: " + PCIDevices.ParsePIDTranscript(PIDs[i]) + Environment.NewLine + Environment.NewLine;
             }
         }
     }
