@@ -52,22 +52,22 @@ namespace LabIIPU_PCI
             return devicesID;
         }
 
-        public static List<string> ParseVIDsTranscript()
+        public static List<string> ParseVIDTranscript()
         {
-            List<string> listOfVIDs = new List<string>();
             String pattern = @"^(\w{4}  (.*?)$)";
             foreach (Match match in Regex.Matches(GetFileContent(), pattern, RegexOptions.Multiline))
-                listOfVIDs.Add(match.Value);
-            return listOfVIDs;
+                if (match.Value.Contains(VID.ToLower()))
+                    return match.Value;
+            return VID + " Vendor not found";
         }
 
         public static List<string> ParsePIDsTranscript()
         {
-            List<string> listOfPIDs = new List<string>();
             String pattern = @"^(\t\w{4})  (.*?)$";
             foreach (Match match in Regex.Matches(GetFileContent(), pattern, RegexOptions.Multiline))
-                listOfPIDs.Add(match.Value.Replace("\t", ""));
-            return listOfPIDs;
+                if (match.Value.Replace("\t", "").Contains(PID.ToLower()))
+                    return match.Value.Replace("\t", "");
+            return PID + " Product not found";
         }
 
         public static void DownloadFileOfDevIDs()
